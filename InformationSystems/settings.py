@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'lab1.apps.Lab1Config',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
