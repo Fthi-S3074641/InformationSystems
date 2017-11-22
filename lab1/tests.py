@@ -7,34 +7,49 @@ from InformationSystems.decorators import measure_performance
 from lab1.models import Image
 
 NUM_IMAGES = 12
+NUM_QUERIES = 100000
 
 
 class Lab1Test(TestCase):
     @classmethod
-    @measure_performance
+    @measure_performance(1)
     def setUpClass(cls):
         super(Lab1Test, cls).setUpClass()
         cls.images = [Image.create() for _ in range(0, NUM_IMAGES)]
 
-    @measure_performance
+    @measure_performance(NUM_QUERIES)
     def test_retrieve_image(self):
-        assert random.choice(self.images) is not None
+        res = [self.get_random_image() is not None for _ in range(0, NUM_QUERIES)]
 
-    @measure_performance
+        assert all(res)
+
+    @measure_performance(NUM_QUERIES)
     def test_retrieve_x(self):
-        idx_x = random.randint(0, Image.HEIGHT)
-        img = random.choice(self.images)
-        val = img.rainxy_set.get(x=idx_x)
-        assert val is not None
+        img = self.get_random_image()
+        x = self.get_random_x(img)
 
-    @measure_performance
+        assert x is not None
+
+    @measure_performance(NUM_QUERIES)
     def test_retrieve_xy(self):
-        idx_x = random.randint(0, Image.HEIGHT)
-        idx_y = random.randint(0, Image.WIDTH)
-        img = random.choice(self.images)
+        img = self.get_random_image()
+        x = self.get_random_x(img)
+        y = self.get_random_y(x)
 
-        rainxy = img.rainxy_set.get(x=idx_x)
+        assert y is not None
+
+    @staticmethod
+    def get_random_image():
+        id_img = random.randint(1, NUM_IMAGES)
+        return Image.objects.get(id=id_img)
+
+    @staticmethod
+    def get_random_x(img):
+        idx_x = random.randint(1, Image.HEIGHT)
+        return img.rainxy_set.get(x=idx_x)
+
+    @staticmethod
+    def get_random_y(rainxy):
+        idx_y = random.randint(1, Image.WIDTH)
         arr = rainxy.y.split(',')
-        val_y = arr[idx_y]
-
-        assert val_y is not None
+        return arr[idx_y]
