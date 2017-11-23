@@ -8,13 +8,12 @@ import matplotlib.pyplot as plt
 from InformationSystems.decorators import measure_total_time
 from lab1.models import Image, RainXY
 
-NUM_IMAGES = 37
+NUM_IMAGES = 363
 NUM_QUERIES = 5000
 
 
 class Lab1Test(TestCase):
     @classmethod
-    @measure_total_time(1)
     def setUpClass(cls):
         super(Lab1Test, cls).setUpClass()
         cls.images = cls._create_images()
@@ -26,18 +25,10 @@ class Lab1Test(TestCase):
         assert all(res)
 
     @measure_total_time(NUM_QUERIES)
-    def test_retrieve_y(self):
-        img = self._get_random_image()
-        res = [self._get_random_y(img) is not None for _ in range(0, NUM_QUERIES)]
-
-        assert all(res)
-
-    @measure_total_time(NUM_QUERIES)
     def test_retrieve_xy(self):
-        img = self._get_random_image()
-
         res = []
         for _ in range(0, NUM_QUERIES):
+            img = self._get_random_image()
             y = self._get_random_y(img)
             x = self._get_random_x(y)
             res.append(x is not None)
@@ -45,6 +36,7 @@ class Lab1Test(TestCase):
         assert all(res)
 
     @classmethod
+    @measure_total_time(NUM_IMAGES)
     def _create_images(cls):
         ts_start = time.time()
         ts = [0]
@@ -86,7 +78,7 @@ class Lab1Test(TestCase):
         plt.ylabel("Time since Start in Seconds")
         plt.xlabel("Number of Images created")
         plt.grid(True, axis='y', which='both')
-        plt.yticks(range(0, math.ceil(max(ts))))
-        plt.xticks(range(0, len(ts)))
+        # plt.yticks(range(0, math.ceil(max(ts))))
+        # plt.xticks(range(0, len(ts)))
         plt.show()
 

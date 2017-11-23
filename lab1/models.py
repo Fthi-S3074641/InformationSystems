@@ -18,8 +18,8 @@ class Image(models.Model):
         img.save()
 
         arr2d = [[str(cls.gen_random_rain()) for _ in range(cls.WIDTH)] for _ in range(cls.HEIGHT)]
-        for idx in range(0, len(arr2d)):
-            vals = ','.join(arr2d[idx])
+        for idx, vals in enumerate(arr2d):
+            vals = ','.join(vals)
             rain = RainXY(image=img, y=idx, x=vals)
             rain.save()
 
@@ -34,5 +34,4 @@ class Image(models.Model):
 class RainXY(models.Model):
     image = models.ForeignKey(Image, on_delete=models.CASCADE)
     y = models.IntegerField()
-    x = models.CharField(validators=[validate_comma_separated_integer_list],
-                         max_length=Image.WIDTH * 4)
+    x = models.TextField(validators=[validate_comma_separated_integer_list])
