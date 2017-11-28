@@ -1,21 +1,18 @@
 import random
 import time
 
-import math
 from django.test import TestCase
-import matplotlib.pyplot as plt
 
 from InformationSystems.decorators import measure_total_time
-from lab1.models import Image, RainXY
+from lab1.config import IMG_HEIGHT, IMG_WIDTH, NUM_IMAGES, NUM_QUERIES
+from lab1.models.mysql.one import Image, RainXY
+from lab1.tests.misc import save_timeseries_plot
 
-NUM_IMAGES = 363
-NUM_QUERIES = 5000
 
-
-class Lab1Test(TestCase):
+class SQLTests(TestCase):
     @classmethod
     def setUpClass(cls):
-        super(Lab1Test, cls).setUpClass()
+        super(SQLTests, cls).setUpClass()
         cls.images = cls._create_images()
 
     @measure_total_time(NUM_QUERIES)
@@ -45,7 +42,7 @@ class Lab1Test(TestCase):
             res.append(Image.create())
             ts.append(time.time() - ts_start)
 
-        # cls._print_timeseries(ts)
+        save_timeseries_plot(ts)
 
         return res
 
@@ -59,7 +56,7 @@ class Lab1Test(TestCase):
 
     @classmethod
     def _get_random_y(cls, img):
-        idx = random.randint(0, Image.HEIGHT - 1)
+        idx = random.randint(0, IMG_HEIGHT - 1)
         try:
             return img.rainxy_set.get(y=idx)
         except RainXY.DoesNotExist:
@@ -67,18 +64,6 @@ class Lab1Test(TestCase):
 
     @staticmethod
     def _get_random_x(rainxy):
-        idx_y = random.randint(0, Image.WIDTH - 1)
+        idx_x = random.randint(0, IMG_WIDTH - 1)
         arr = rainxy.x.split(',')
-        return arr[idx_y]
-
-    @staticmethod
-    def _print_timeseries(ts):
-        plt.plot(ts)
-        plt.plot(ts, 'ro')
-        plt.ylabel("Time since Start in Seconds")
-        plt.xlabel("Number of Images created")
-        plt.grid(True, axis='y', which='both')
-        # plt.yticks(range(0, math.ceil(max(ts))))
-        # plt.xticks(range(0, len(ts)))
-        plt.show()
-
+        return arr[idx_x]

@@ -1,15 +1,11 @@
-import random
-
 from django.core.validators import validate_comma_separated_integer_list
 from django.db import models
 
+from lab1.config import IMG_HEIGHT, IMG_WIDTH
+from lab1.models.misc import gen_random_val
+
 
 class Image(models.Model):
-    WIDTH = 550
-    HEIGHT = 500
-
-    SCARCITY = 30
-
     timestamp = models.DateField(auto_now_add=True)
 
     @classmethod
@@ -17,18 +13,14 @@ class Image(models.Model):
         img = Image()
         img.save()
 
-        arr2d = [[str(cls.gen_random_rain()) for _ in range(cls.WIDTH)] for _ in range(cls.HEIGHT)]
+        arr2d = [[str(gen_random_val()) for _ in range(IMG_WIDTH)] for _ in
+                 range(IMG_HEIGHT)]
         for idx, vals in enumerate(arr2d):
             vals = ','.join(vals)
             rain = RainXY(image=img, y=idx, x=vals)
             rain.save()
 
         return img
-
-    @classmethod
-    def gen_random_rain(cls):
-        val = random.randint(0, 100)
-        return val if val > cls.SCARCITY else 0
 
 
 class RainXY(models.Model):
