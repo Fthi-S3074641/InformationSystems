@@ -1,36 +1,26 @@
 import random
 
-from django.test import TestCase
-from faker import Faker
-from rest_framework.test import APIRequestFactory
-
-import lab2.config as config
 from lab2.models import Profile
+from lab2.tests.base import BaseTest
+
+BASE_URL = '/lab-two/restful/profiles/'
 
 
-class RESTfulTest(TestCase):
-    @classmethod
-    def setUpClass(cls):
-        super(RESTfulTest, cls).setUpClass()
-        cls.factory = APIRequestFactory()
-        cls.faker = Faker()
-
-    def setUp(self):
-        profiles = [self._create_random_profile() for _ in range(0, config.NUM_PROFILES)]
-        [self._add_friends_to_profile(profile) for profile in profiles]
-
+class RESTfulTest(BaseTest):
     def test_retrieve_all(self):
-        result = self.factory.get('lab2/restful/profiles')
-        print(result)
+        result = self.client.get(BASE_URL)
+        assert result.status_code == 200, f'Error: Result status code ' \
+                                          f'{result.status_code}. {result.content}'
 
-    def _create_random_profile(self):
-        random_name = self.faker.name()
-        random_age = random.randint(1, 100)
-        random_address = self.faker.address()
+        data_check = [p.name for p in list(Profile.objects.all())]
+        data_received = [p['name'] for p in result.data]
 
-        return Profile(name=random_name, age=random_age, address=random_address)
+        assert all([name in data_received for name in data_check])
 
-    def _add_friends_to_profile(self, profile):
-        all_profiles = Profile.objects.all().exclude(id=profile.id)
-        friends_to_add = random.sample(all_profiles, config.NUM_FRIENDS)
-        [profile.friends.add(f) for f in friends_to_add]
+    def test_retrieve_one(self):
+        random_profile = random.choice(list(Profile.objects.all()))
+        result = self.client.get(f'{BASE_URL}{random_profile.id}/')
+        assert result.status_code == 200, f'Error: Result status code ' \
+                                          f'{result.status_code}. {result.content}'
+
+        assert result.data['name'] == random_profile.name

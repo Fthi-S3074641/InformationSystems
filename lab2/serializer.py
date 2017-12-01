@@ -9,10 +9,10 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('name', 'age', 'address', 'friends')
 
 
-class ProfileViewSet(viewsets.ModelViewSet):
+class ProfileView(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
 
 
-router = routers.DefaultRouter()
-router.register(r'profiles', ProfileViewSet)
+router = routers.SimpleRouter()
+router.register('profiles', ProfileView)

@@ -20,6 +20,6 @@ from graphene_django.views import GraphQLView
 from lab2.serializer import router
 
 urlpatterns = [
-    url(r'^lab2/restful', include(router.urls)),
-    url(r'^lab2/graphql', GraphQLView.as_view(graphiql=True))
+    url(r'^lab-two/restful/', include(router.urls)),
+    url(r'^lab-two/graphql/', GraphQLView.as_view(graphiql=True))
 ]

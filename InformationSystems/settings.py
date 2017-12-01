@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'graphene_django',
 ]
 
 MIDDLEWARE = [
@@ -78,7 +79,7 @@ WSGI_APPLICATION = 'InformationSystems.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'lab2'
+        'NAME': 'db.sqlite'
     }
     # For Lab1, uncomment this:
     # 'default': {
@@ -95,6 +96,10 @@ DATABASES = {
 #     db="lab1",
 #     host="localhost"
 # )
+
+GRAPHENE = {
+    'SCHEMA': 'lab2.schema.schema'
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
