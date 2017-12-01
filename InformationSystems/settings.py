@@ -32,11 +32,13 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'lab1.apps.Lab1Config',
+    'lab2.apps.Lab2Config',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -75,18 +77,24 @@ WSGI_APPLICATION = 'InformationSystems.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'HOST': '127.0.0.1',
-        'NAME': 'lab1',
-        'USER': 'root',
-        'PASSWORD': 'secret'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'lab2'
     }
+    # For Lab1, uncomment this:
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'HOST': '127.0.0.1',
+    #     'NAME': 'lab1',
+    #     'USER': 'root',
+    #     'PASSWORD': 'secret'
+    # }
 }
 
-mongoengine.connect(
-    db="lab1",
-    host="localhost"
-)
+# For lab1, uncomment this:
+# mongoengine.connect(
+#     db="lab1",
+#     host="localhost"
+# )
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -106,6 +114,12 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny'
+    ]
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
