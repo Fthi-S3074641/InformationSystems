@@ -7,6 +7,8 @@
 var app = require('../app');
 var debug = require('debug')('lab3:server');
 var http = require('http');
+var Handler = require('../labcode/IoT/handler');
+var Timer = require('../labcode/IoT/timer');
 
 /**
  * Get port from environment and store in Express.
@@ -28,6 +30,10 @@ var server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
+
+let handler = new Handler();
+let timer = new Timer(handler);
+timer.start();
 
 /**
  * Normalize a port into a number, string, or false.
