@@ -14,7 +14,7 @@ class Timer {
     }
 
     start() {
-        setInterval(this.genData, INTERVAL);
+        setInterval(this.genData.bind(this), INTERVAL);
     }
 }
 
