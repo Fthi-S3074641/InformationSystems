@@ -3,12 +3,12 @@ let ThingSpeakClient = require('thingspeakclient');
 ArchiveLength = 10;
 Threshold_Simple = 0.1;
 Threshold_SMA = 0.5;
-ModeSMA = true;
 
 ChannelId = 382493;
 KeyWrite = '5RND6RVZ6PEGVTDD';
 KeyRead = 'Z9WG7L90VVBL9HG8';
 
+ModeSMA = true;
 
 class Handler {
     constructor() {
@@ -46,16 +46,17 @@ class Handler {
     }
 
     calcSimple(newData) {
-        let diff = Math.abs(newData - this.SMA.slice(-1).pop());
+        let lastData = this.SMA.slice(-1).pop();
+        let diff = Math.abs(newData - lastData);
         let above_threshold = diff > Threshold_Simple;
 
         return {above_threshold: above_threshold, dataToSent: newData}
     }
 
     sendToEdgeNode(data) {
-        let fieldMap = {field1: data};
+        let fieldDict = {field1: data};
 
-        this.client.updateChannel(ChannelId, fieldMap, function (result) {
+        this.client.updateChannel(ChannelId, fieldDict, function (result) {
             if (result !== null) {
                 console.error('Data could not be sent. Error: ' + result.message)
             } else {
