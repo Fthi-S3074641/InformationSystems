@@ -1,5 +1,7 @@
 from functools import reduce
 
+import numpy as np
+
 FILENAME = 'groceries.txt'
 
 
@@ -8,9 +10,9 @@ class DataProvider:
     def get_data(cls):
         data_text = cls.read_text_file()
         data_encoded, codes = cls.encode_data(data_text)
-        data_minimized = cls.minimize_data(data_encoded)
+        data_matrix = cls.matrixify_data(data_encoded, codes)
 
-        return data_minimized, codes
+        return data_matrix, codes
 
     @classmethod
     def read_text_file(cls):
@@ -31,6 +33,12 @@ class DataProvider:
         return data_encoded, itemset
 
     @classmethod
-    def minimize_data(cls, data):
-        print('Minimizing retrieved data into sets')
-        return [set(tx) for tx in data]
+    def matrixify_data(cls, data, itemset):
+        shape = (len(data), len(itemset))
+        matrix = np.zeros(shape, dtype=np.int)
+
+        for idx, tx in enumerate(data):
+            for item in tx:
+                matrix[idx, item] = 1
+
+        return matrix

@@ -1,27 +1,28 @@
-from collections import Iterable
 from copy import deepcopy
-from functools import reduce
 from itertools import combinations
+
+import numpy as np
+from functools import reduce
 
 
 class Apriori:
     @classmethod
     def calc(cls, data, min_sup, min_conf):
-        itemset = cls.get_itemset(data)
-
-        freq_itemset = cls.calc_freq_itemset(itemset, data, min_sup)
+        freq_itemset = cls.calc_freq_itemset(data, min_sup)
         rules = cls.calc_rules(freq_itemset, data, min_conf)
 
         return freq_itemset, rules
 
     @classmethod
-    def calc_freq_itemset(cls, itemset, data, min_sup):
+    def calc_freq_itemset(cls, data, min_sup):
         print('Calculating frequent itemset...')
+        itemset = range(0, data.shape[1])
+
         k = 2
         itemset_old = []
 
         while True:
-            print(f'Current itemset: {itemset}')
+            print(f'Current itemset - Itemset : {itemset}')
             itemset = cls.reduce_itemset(itemset, data, min_sup)
 
             if not itemset:
@@ -29,7 +30,9 @@ class Apriori:
 
             itemset_old = deepcopy(itemset)
             itemset = cls.subsets(itemset, k)
-            itemset = cls.prune_itemset(itemset, itemset_old)
+
+            if k > 2:
+                itemset = cls.prune_itemset(itemset, itemset_old)
 
             k += 1
 
@@ -40,12 +43,17 @@ class Apriori:
         print('Calculating rules...')
         rules = []
 
+        # If the frequent itemset consists of only single items, return no rules
+        if type(freq_itemset[0]) is int:
+            return rules
+
         k = len(freq_itemset[0])
         while k > 1:
             for item in freq_itemset:
                 subs = cls.subsets(item, k - 1)
                 res = filter(lambda sub: cls.conf(item, sub, data) >= min_conf, subs)
-                pairs = [(item - sub, sub, cls.conf(item, sub, data)) for sub in res]
+                pairs = [(set(item) - set(sub), sub, cls.conf(item, sub, data))
+                         for sub in res]
                 rules += pairs
 
             k -= 1
@@ -59,12 +67,6 @@ class Apriori:
         support_sub = cls.calc_support(subset, data)
 
         return support_item / support_sub
-
-    @classmethod
-    def get_itemset(cls, data):
-        items_set = reduce((lambda x, y: x.union(y)), data)
-        items_list = [{item} for item in items_set]
-        return items_list
 
     @classmethod
     def reduce_itemset(cls, itemset, data, min_sup):
@@ -83,18 +85,18 @@ class Apriori:
         return pruned
 
     @classmethod
-    def calc_support(cls, item, data):
-        item = {item} if type(item) is not set else item
+    def calc_support(cls, itemset, data):
+        # If there's only a single element in the itemset
+        if type(itemset) is int:
+            return sum(data[:, itemset]) / data.shape[0]
 
-        entries = sum([1 for tx in data if item.issubset(tx)])
+        entries = np.sum(np.all(data[:, itemset], axis=1))
 
-        return entries / len(data)
+        return entries / data.shape[0]
 
     @classmethod
     def subsets(cls, itemset, length):
-        elements = set()
-        [elements.update(s) if isinstance(s, Iterable) else elements.update([s])
-         for s in itemset]
-        combis = [set(combo) for combo in combinations(elements, length)]
+        if length > 2 and type(itemset) is list:
+            itemset = reduce(lambda x, y: set(x).union(set(y)), itemset)
 
-        return combis
+        return combinations(itemset, length)

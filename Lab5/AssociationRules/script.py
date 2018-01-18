@@ -1,5 +1,6 @@
 from Lab5.AssociationRules.apriori import Apriori
 from Lab5.AssociationRules.data_provider import DataProvider
+from Lab5.AssociationRules.printer import Printer
 
 
 def print_result(freq_itemset, rules, codes):
@@ -22,5 +23,6 @@ if __name__ == '__main__':
     confidence = 0.8
 
     data, codes = DataProvider.get_data()
-    freq_itemset, rules = Apriori.calc(data, support, confidence)
-    print_result(freq_itemset, rules, codes)
+    Printer.print_histogram(data)
+    # freq_itemset, rules = Apriori.calc(data, support, confidence)
+    # print_result(freq_itemset, rules, codes)
