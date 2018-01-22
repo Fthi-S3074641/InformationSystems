@@ -1,0 +1,31 @@
+    \item flour,root vegetables,whipped/sour cream $\Rightarrow$ whole milk
+    \item oil,other vegetables,root vegetables,yogurt $\Rightarrow$ whole milk
+    \item rice,sugar $\Rightarrow$ whole milk
+    \item butter,domestic eggs,other vegetables,whipped/sour cream $\Rightarrow$ whole milk
+    \item citrus fruit,root vegetables,tropical fruit,whipped/sour cream $\Rightarrow$ other
+    vegetables
+    \item canned fish,hygiene articles $\Rightarrow$ whole milk
+    \item brown bread,pip fruit,whipped/sour cream $\Rightarrow$ other vegetables
+    \item cream cheese ,domestic eggs,napkins $\Rightarrow$ whole milk
+    \item cream cheese ,domestic eggs,sugar $\Rightarrow$ whole milk
+    \item bottled water,other vegetables,pip fruit,root vegetables $\Rightarrow$ whole milk
+    \item ham,pip fruit,tropical fruit,whole milk $\Rightarrow$ other vegetables
+    \item oil,root vegetables,tropical fruit,yogurt $\Rightarrow$ whole milk
+    \item butter,domestic eggs,soft cheese $\Rightarrow$ whole milk
+    \item butter,hygiene articles,pip fruit $\Rightarrow$ whole milk
+    \item butter,rice,root vegetables $\Rightarrow$ whole milk
+    \item citrus fruit,root vegetables,soft cheese $\Rightarrow$ other vegetables
+    \item curd,domestic eggs,sugar $\Rightarrow$ whole milk
+    \item hygiene articles,pip fruit,root vegetables $\Rightarrow$ whole milk
+    \item hygiene articles,root vegetables,whipped/sour cream $\Rightarrow$ whole milk
+    \item butter,fruit/vegetable juice,tropical fruit,whipped/sour cream $\Rightarrow$ other vegetables
+    \item butter,other vegetables,pork,whipped/sour cream $\Rightarrow$ whole milk
+    \item butter,other vegetables,root vegetables,white bread $\Rightarrow$ whole milk
+    \item citrus fruit,pastry,rolls/buns,whipped/sour cream $\Rightarrow$ whole milk
+    \item grapes,tropical fruit,whole milk,yogurt $\Rightarrow$ other vegetables
+    \item ham,pip fruit,tropical fruit,yogurt $\Rightarrow$ other vegetables
+    \item newspapers,rolls/buns,soda,whole milk $\Rightarrow$ other vegetables
+    \item rolls/buns,root vegetables,sausage,tropical fruit $\Rightarrow$ whole milk
+    \item oil,other vegetables,root vegetables,tropical fruit,yogurt $\Rightarrow$ whole milk
+    \item cream cheese ,other vegetables,sugar $\Rightarrow$ whole milk
+    \item root vegetables,sausage,tropical fruit,yogurt $\Rightarrow$ whole milk

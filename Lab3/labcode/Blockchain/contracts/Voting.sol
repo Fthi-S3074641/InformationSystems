@@ -9,7 +9,7 @@ contract Voting {
 
     address public director;
 
-    mapping (address => Shareholder) public Shareholders;
+    mapping(address => Shareholder) public Shareholders;
 
     Choice[] public choices;
 
